@@ -955,9 +955,10 @@ img {
     margin: 36px 0 46px;
   }
   .hero-cta {
-    /* Mobile: buttons should span the full available width */
-    width: 100%;
-    margin-inline: 0;
+    /* Mobile: make CTA span the viewport width (ignore container padding) */
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: 18px;
     margin-top: 28px;
     display: grid;
     gap: 22px;
