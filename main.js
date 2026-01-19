@@ -232,22 +232,52 @@ function setupHeroSlider() {
   const layerB = document.querySelector('[data-hero-bg="b"]');
   if (!layerA || !layerB) return;
 
-  // Mobile: use the dedicated mobile background (no animation).
-  if (window.matchMedia?.("(max-width: 520px)")?.matches) {
-    setBg(layerA, "./herobackground1_mobile.png");
+  const isMobile = window.matchMedia?.("(max-width: 520px)")?.matches ?? false;
+
+  const desktopImages = [
+    "./Main Banner Desktop/אבוקדו.jpg",
+    "./Main Banner Desktop/אנגליקה.jpg",
+    "./Main Banner Desktop/דיימונד.jpg",
+    "./Main Banner Desktop/מאפים.jpg",
+    "./Main Banner Desktop/סנטה.jpg",
+    "./Main Banner Desktop/פבלובה.jpg",
+    "./Main Banner Desktop/פסים.jpg",
+    "./Main Banner Desktop/שקשוקה.jpg",
+  ];
+
+  const mobileImages = [
+    "./Main Banner Mobile/pavlova.jpg",
+    "./Main Banner Mobile/מאפים.jpg",
+    "./Main Banner Mobile/מארז 1.jpg",
+    "./Main Banner Mobile/מקושקשת.jpg",
+    "./Main Banner Mobile/סנטה.jpg",
+    "./Main Banner Mobile/פקורינו.jpg",
+    "./Main Banner Mobile/פרז.jpg",
+    "./Main Banner Mobile/קשוקהש.jpg",
+  ];
+
+  const images = isMobile ? mobileImages : desktopImages;
+
+  // If reduced motion is enabled, show a single still image (no animation).
+  if (prefersReducedMotion()) {
+    setBg(layerA, images[0]);
     layerA.style.opacity = "1";
     layerB.style.opacity = "0";
     return;
   }
 
-  const images = ["./herobackground1.png", "./herobackground2.png", "./herobackground3.png"];
+  if (images.length < 2) {
+    setBg(layerA, images[0]);
+    layerA.style.opacity = "1";
+    layerB.style.opacity = "0";
+    return;
+  }
+
   let idx = 0;
   let showingA = true;
 
   setBg(layerA, images[0]);
   setBg(layerB, images[1]);
-
-  if (prefersReducedMotion()) return;
 
   const tick = () => {
     const nextIdx = (idx + 1) % images.length;
