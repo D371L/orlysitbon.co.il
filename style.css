@@ -921,6 +921,12 @@ img {
     width: 100%;
     padding-inline: 18px;
   }
+  /* Hero needs true full-width content on mobile (so CTA buttons can span the screen) */
+  .hero .container {
+    width: 100%;
+    margin-inline: 0;
+    padding-inline: 18px;
+  }
   /* Let the logo sit down to the hero edge (remove extra bottom space) */
   .header-inner {
     padding-bottom: 0;
