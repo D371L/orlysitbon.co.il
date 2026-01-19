@@ -703,18 +703,19 @@ img {
 /* Mobile menu */
 .mobile-menu {
   position: fixed;
-  inset: 0;
+  top: var(--mobile-header-h, 0px);
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 100;
   background: #ffffff;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .mobile-menu__inner {
-  height: 100%;
   width: min(520px, 100%);
   margin-inline: auto;
   padding: 10px 18px 22px;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 18px;
 }
 .mobile-menu__nav {
   display: grid;

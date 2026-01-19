@@ -148,9 +148,17 @@ function setupMobileMenu() {
 
   let lastActive = null;
 
+  const updateOffset = () => {
+    const header = document.querySelector(".site-header");
+    if (!header) return;
+    const h = Math.round(header.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--mobile-header-h", `${h}px`);
+  };
+
   const setOpen = (isOpen) => {
     if (isOpen) {
       lastActive = document.activeElement;
+      updateOffset();
       menu.hidden = false;
       document.body.style.overflow = "hidden";
       openBtn.setAttribute("aria-expanded", "true");
@@ -173,6 +181,9 @@ function setupMobileMenu() {
     if (e.key === "Escape" && !menu.hidden) setOpen(false);
   });
   for (const l of links) l.addEventListener("click", () => setOpen(false));
+
+  updateOffset();
+  window.addEventListener("resize", updateOffset, { passive: true });
 }
 
 function setupSmoothAnchors() {
