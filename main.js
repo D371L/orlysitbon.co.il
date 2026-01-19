@@ -173,7 +173,10 @@ function setupMobileMenu() {
     }
   };
 
-  openBtn.addEventListener("click", () => setOpen(true));
+  openBtn.addEventListener("click", () => {
+    const isOpen = openBtn.getAttribute("aria-expanded") === "true";
+    setOpen(!isOpen);
+  });
   menu.addEventListener("click", (e) => {
     if (e.target === menu) setOpen(false);
   });
