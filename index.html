@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#b10b2b" />
+    <title>Orly Sitbon Patisserie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">דלג לתוכן</a>
+
+    <header class="site-header" data-header>
+      <div class="kosher-badge kosher-badge--corner" aria-label="כשר">כשר</div>
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="דף הבית">
+          <img
+            src="./header_logo.png"
+            alt="Orly Sitbon Patisserie"
+            width="160"
+            height="64"
+            loading="eager"
+          />
+        </a>
+
+        <nav class="nav" aria-label="ראשי">
+          <a class="nav-link" href="#section-pastry">מאפים וקינוחים</a>
+          <a class="nav-link" href="#section-brunch">בראנצ׳ים ומאפים מלוחים</a>
+          <a class="nav-link" href="#section-boxes">מארזים מושלמים</a>
+          <a class="nav-link" href="#section-hosting">מגשי אירוח</a>
+          <span class="header-sep header-sep--nav" aria-hidden="true"></span>
+          <a class="nav-link" href="#section-about">קצת עליי</a>
+          <span class="header-sep header-sep--nav" aria-hidden="true"></span>
+          <span class="nav-address" aria-label="כתובת">יצחק שדה 7, נהריה</span>
+          <span class="nav-social" aria-label="רשתות חברתיות">
+            <a class="social-link" href="#" aria-label="TikTok" title="TikTok">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M16.5 3c.7 2.8 2.7 4.5 5.5 4.7v3c-2.1.1-4-0.6-5.5-1.7V16c0 4-3.2 7-7.2 7-3.9 0-7.3-3-7.3-7s3.4-7 7.3-7c.4 0 .9 0 1.3.1v3.2c-.4-.1-.8-.2-1.3-.2-2.2 0-4.1 1.7-4.1 4s1.8 4 4.1 4 4-1.7 4-4V3h3.2Z"
+                />
+              </svg>
+            </a>
+            <a class="social-link" href="#" aria-label="Instagram" title="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4.8A5.2 5.2 0 1 1 6.8 14 5.2 5.2 0 0 1 12 8.8Zm0 2A3.2 3.2 0 1 0 15.2 14 3.2 3.2 0 0 0 12 10.8ZM18 6.4a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            </a>
+            <a class="social-link" href="#" aria-label="Facebook" title="Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v3H7v3h3v6h3v-6h3l1-3h-4v-3c0-.6.4-1 1-1Z"
+                />
+              </svg>
+            </a>
+          </span>
+          <span class="header-sep header-sep--nav" aria-hidden="true"></span>
+        </nav>
+
+        <div class="header-left" aria-label="מידע והפניות">
+          <a
+            class="btn btn--pill btn--primary header-cta"
+            href="https://orlysitbon.mytabit.co.il/tabit-order?siteName=orlysitbon&step=enter"
+            target="_blank"
+            rel="noopener noreferrer"
+            >הזמנות ומשלוחים</a
+          >
+        </div>
+
+        <div class="header-mobile-left" aria-label="ניווט מובייל">
+          <button
+            class="icon-btn burger"
+            type="button"
+            aria-label="תפריט"
+            aria-controls="mobileMenu"
+            aria-expanded="false"
+            data-menu-open
+          >
+            <span class="burger-lines" aria-hidden="true"></span>
+          </button>
+          <div class="kosher-badge" aria-label="כשר">כשר</div>
+        </div>
+      </div>
+    </header>
+
+    <div
+      class="mobile-menu"
+      id="mobileMenu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="תפריט"
+      hidden
+      data-menu
+    >
+      <div class="mobile-menu__inner">
+        <nav class="mobile-menu__nav" aria-label="ראשי (מובייל)">
+          <a class="mobile-link" href="#section-pastry" data-menu-link>מאפים וקינוחים</a>
+          <a class="mobile-link" href="#section-brunch" data-menu-link
+            >בראנצ׳ים ומאפים מלוחים</a
+          >
+          <a class="mobile-link" href="#section-boxes" data-menu-link>מארזים מושלמים</a>
+          <a class="mobile-link" href="#section-hosting" data-menu-link>מגשי אירוח</a>
+          <a class="mobile-link" href="#section-about" data-menu-link>קצת עליי</a>
+          <div class="mobile-divider" aria-hidden="true"></div>
+          <div class="mobile-address">יצחק שדה 7, נהריה</div>
+          <div class="mobile-divider" aria-hidden="true"></div>
+        </nav>
+
+        <div class="mobile-menu__social" aria-label="רשתות חברתיות">
+          <a class="social-link" href="#" aria-label="TikTok" title="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M16.5 3c.7 2.8 2.7 4.5 5.5 4.7v3c-2.1.1-4-0.6-5.5-1.7V16c0 4-3.2 7-7.2 7-3.9 0-7.3-3-7.3-7s3.4-7 7.3-7c.4 0 .9 0 1.3.1v3.2c-.4-.1-.8-.2-1.3-.2-2.2 0-4.1 1.7-4.1 4s1.8 4 4.1 4 4-1.7 4-4V3h3.2Z"
+              />
+            </svg>
+          </a>
+          <a class="social-link" href="#" aria-label="Instagram" title="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4.8A5.2 5.2 0 1 1 6.8 14 5.2 5.2 0 0 1 12 8.8Zm0 2A3.2 3.2 0 1 0 15.2 14 3.2 3.2 0 0 0 12 10.8ZM18 6.4a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"
+              />
+            </svg>
+          </a>
+          <a class="social-link" href="#" aria-label="Facebook" title="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v3H7v3h3v6h3v-6h3l1-3h-4v-3c0-.6.4-1 1-1Z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero__bg" aria-hidden="true">
+          <div class="hero__bg-layer hero__bg-layer--a" data-hero-bg="a"></div>
+          <div class="hero__bg-layer hero__bg-layer--b" data-hero-bg="b"></div>
+        </div>
+
+        <div class="hero__band hero__band--top">
+          <div class="container hero__content">
+            <div class="hero__title">
+              <img
+                class="hero__title-img"
+                src="./orlysitbontext.png"
+                alt="ORLY SITBON PATISSERIE"
+                width="576"
+                height="135"
+                loading="eager"
+              />
+            </div>
+
+            <div class="hero__cats" aria-label="קטגוריות">
+              <span class="hero-cat">מאפים</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span class="hero-cat">קינוחים</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span class="hero-cat">בראנצ׳ים</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span class="hero-cat">מגשי אירוח</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span class="hero-cat">חוויה</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span class="hero-cat">שירות</span>
+            </div>
+
+            <div class="hero-cta">
+              <a
+                class="btn btn--pill btn--primary"
+                href="https://orlysitbon.mytabit.co.il/tabit-order?siteName=orlysitbon&step=enter"
+                target="_blank"
+                rel="noopener noreferrer"
+                >הזמנות ומשלוחים</a
+              >
+              <a
+                class="btn btn--pill btn--outline"
+                href="https://customer-profile.tabit.cloud/548BE56D-7E5F-4BA7-BB2F-69772AD2961C/auth/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                >הצטרפות למועדון</a
+              >
+              <a
+                class="btn btn--pill btn--outline"
+                href="https://tabitisrael.co.il/gift-cards/create-card?accountGuid=548BE56D-7E5F-4BA7-BB2F-69772AD2961C&step=0"
+                target="_blank"
+                rel="noopener noreferrer"
+                >גיפט קארד</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-pastry">
+        <div class="container">
+          <h2 class="section-title">מאפים וקינוחים</h2>
+          <div class="cards" data-grid="pastry" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" id="section-brunch">
+        <div class="container">
+          <h2 class="section-title">בראנצ׳י ומאפים מלוחים</h2>
+          <div class="cards" data-grid="brunch" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" id="section-boxes">
+        <div class="container">
+          <h2 class="section-title">מארזים מושלמים</h2>
+          <div class="cards" data-grid="boxes" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" id="section-hosting">
+        <div class="container">
+          <h2 class="section-title">מגשי אירוח</h2>
+          <div class="cards" data-grid="hosting" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="about" id="section-about">
+        <div class="container about__inner">
+          <div class="about__header">
+            <h2 class="section-title section-title--about">קצת עליי - הסיפור שלי</h2>
+          </div>
+          <div class="about__grid">
+            <figure class="about__media">
+              <img
+                src="./aboutme.png"
+                alt="תמונת בעלת העסק"
+                loading="lazy"
+                width="445"
+                height="895"
+              />
+              <div class="about__logo" aria-hidden="true">
+                <img src="./footer_logo.png" alt="" width="120" height="148" loading="lazy" />
+              </div>
+            </figure>
+            <div class="about__text">
+              <p>
+                הי, נעים להכיר! שמי אורלי סיטבון בת 41, נשואה לעמי , אמא לשלושה ילדים
+                מתוקים (נועם, עידו ואיילה) וקונדיטורית עם תשוקה עזה ליצירה ופיתוח.
+                האהבה שלי לאפייה החלה עוד מבית אימי ז״ל במטבח עשיר בטעמים ורעיונות
+                יוצאי דופן!! בבית בו גדלתי, ריח אפיה, היה חלק בלתי נפרד מהבית ומכל
+                חג, אירוע ומסיבה.
+              </p>
+              <p>
+                ביום בהיר אחד בדיוק בתחילת חודשי החורף( שהיית כבת 13 ) נשמטה הקרקע
+                תחת רגלי ואימי היקרה שהייתה כל עולמי נפטרה . חור גדול נפער חיי....
+                ריח האפייה, הטעמים וכל חוויות המטבח נעלמו מביתי בשנים הראשונות לאחר
+                פטירת אימי. שנים שפחדתי לנסות להביט בספר המתכונים של אמא, שנים שלא
+                העזתי להשתמש בכלים שלה וכל זאת מחשש לאכזב אותה כי לא הצלחתי לעשות
+                זאת מושלם כמו שלה, יפה וטעים כמו שלה. אך הצורך העז להחזיר את זכרון
+                הטעם והריחות של אמא לתוך ביתנו ולשמח את משפחתי ואבי דחקו אותי למקום
+                שם התחלתי לנסות, לטעות( המון ) וגם להצליח מידי פעם מה שגרם לי אושר
+                שאין לתארו כלל. אך מעולם לא חשבתי שאוכל להפוך את כל הצורך הזה למקצוע
+                ולא סתם מקצוע אלה אהבה ותשוקה שאם לומר את האמת לפעמים קצת מטורפת ....
+              </p>
+              <p>
+                וכך באמצע החיים עם שלושה ילדים קטנים ואמהות טרייה, החלטתי לעשות שינוי
+                משמעותי בחיי. מצוידת בבעל תומך התחלתי ללמוד קונדטוריה ״בדן גורמה״
+                ולאחר מספר שנים ״באסטלה כיתת אומן״, לאחר 3 שנים שוקוליטריה אצל ״ ניל
+                פוגל ״ והכשרה בפריז. מיום ליום "חיידק" האפייה השתלט עלי ולא יכולתי
+                לחשוב על משהו אחר שאעשה מלבד יצירה טעימה וכימיה מתוקה בעולם
+                הקונדטוריה. Orly Sitbon Patisserie הוקמה עם המון אהבה לפטיסרי הצרפתי,
+                הטעמים, הצבעים, החידושים והמרקמים. אני אוהבת לחקור וללמוד את חומרי
+                הגלם, לפתח מתכונים חדשים, לנסות דברים חדשים, לשלב טעמים וליצור קינוחים
+                מפתיעים. הפרטים הקטנים חשובים לי מאוד, וכל קינוח מקבל את מלוא תשומת
+                הלב, משלב הרעיון, רישום הסקיצה, שילוב הטעמים ועד להשלמת היצירה הסופית.
+              </p>
+              <p>
+                הלמידה וההתפתחות הם חלק חשוב בחיי, הן בפן המקצועי והן בפן האישי, ואני
+                מרבה להשתתף בהשתלמויות והכי חשוב לקרוא, ללמוד ולחקור את התחום ללא
+                הפסקה. את האהבה שלי לקינוחים, יצירה, דיוק ואנשים, אני משלבת בשני
+                תחומים עיקריים: העברת הידע והניסיון שצברתי במהלך השנים בסדנאות אפייה
+                מקצועיות, בקבוצות קטנות ואינטימיות, בשיטה ייחודית של הבנת חומרי הגלם,
+                טכניקות מקצועיות ומכירה של של קינוחים, מאפים ותוצרים יוצאי דופן אני
+                מזמינה אתכם להצטרף אליי ולהתחיל להתאהב.
+              </p>
+              <p class="about__dedication">
+                מוקדש באהבה אין סופית לאמא שלי מירים ברדה ז״ל
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <button class="to-top" type="button" aria-label="Наверх" data-to-top hidden>
+      ↑
+    </button>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-credit">
+          Baked with ❤️ by
+          <a class="footer-link" href="https://hellsec.dev" target="_blank" rel="noopener noreferrer"
+            >HellSec</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
