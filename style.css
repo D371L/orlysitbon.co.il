@@ -724,6 +724,22 @@ img {
   background: #ffffff;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+  will-change: opacity, transform;
+}
+.mobile-menu.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu {
+    transition: none;
+    transform: none;
+  }
 }
 .mobile-menu__inner {
   width: min(520px, 100%);
@@ -913,7 +929,8 @@ img {
     inset-inline-end: 18px;
   }
   .hero {
-    min-height: 800px;
+    min-height: 600px;
+    align-items: flex-start; /* move title block closer to the header on mobile */
   }
   .hero__bg::after {
     /* Mobile Figma: overlay over the background image */
@@ -923,13 +940,21 @@ img {
     background: transparent;
   }
   .hero__band--top {
-    padding-block: 56px 42px;
+    padding-block: 42px 36px;
+  }
+  .hero__title {
+    margin-bottom: 44px;
+  }
+  .hero__cats {
+    margin: 36px 0 46px;
   }
   .hero-cta {
-    width: min(520px, 100%);
+    /* Make CTA buttons wider on mobile (closer to full screen width) */
+    width: min(520px, calc(100vw - 36px));
     margin-inline: auto;
+    margin-top: 28px;
     display: grid;
-    gap: 14px;
+    gap: 22px;
   }
   .hero-cta .btn {
     width: 100%;

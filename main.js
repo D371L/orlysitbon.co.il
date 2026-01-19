@@ -155,6 +155,9 @@ function setupMobileMenu() {
     document.documentElement.style.setProperty("--mobile-header-h", `${h}px`);
   };
 
+  const prefersReduce = () =>
+    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+
   const setOpen = (isOpen) => {
     if (isOpen) {
       lastActive = document.activeElement;
@@ -162,13 +165,24 @@ function setupMobileMenu() {
       menu.hidden = false;
       document.body.style.overflow = "hidden";
       openBtn.setAttribute("aria-expanded", "true");
+      // Animate in on next frame so transitions apply.
+      window.requestAnimationFrame(() => menu.classList.add("is-open"));
       // Focus the first menu link if available.
       const firstLink = menu.querySelector("a, button, [tabindex]:not([tabindex=\"-1\"])");
       if (firstLink && typeof firstLink.focus === "function") firstLink.focus();
     } else {
-      menu.hidden = true;
+      menu.classList.remove("is-open");
       document.body.style.overflow = "";
       openBtn.setAttribute("aria-expanded", "false");
+      // Wait for animation to finish before hiding (otherwise no transition).
+      if (prefersReduce()) {
+        menu.hidden = true;
+      } else {
+        window.setTimeout(() => {
+          // Only hide if still closed.
+          if (openBtn.getAttribute("aria-expanded") !== "true") menu.hidden = true;
+        }, 190);
+      }
       if (lastActive && typeof lastActive.focus === "function") lastActive.focus();
     }
   };
