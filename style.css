@@ -753,6 +753,7 @@ img {
   width: min(520px, 100%);
   margin-inline: auto;
   padding: 10px 18px 22px;
+  direction: rtl; /* ensure RTL layout inside the mobile menu */
 }
 .mobile-menu__nav {
   display: grid;
@@ -763,20 +764,20 @@ img {
 .mobile-link {
   font-size: 18px;
   color: #2c2c2c;
-  padding: 16px 6px;
+  padding: 16px 18px;
   border-top: 1px solid rgba(0, 0, 0, 0.18);
-  text-align: center;
+  text-align: right;
 }
 .mobile-link:hover {
   color: var(--brand);
 }
 .mobile-divider {
-  height: 1px;
-  background: rgba(0, 0, 0, 0.18);
+  /* Avoid double-thick separators (dividers + borders). */
+  display: none;
 }
 .mobile-address {
-  padding: 18px 6px;
-  text-align: center;
+  padding: 18px 18px;
+  text-align: right;
   color: var(--brand);
   font-weight: 500;
   border-top: 1px solid rgba(0, 0, 0, 0.18);
@@ -785,15 +786,17 @@ img {
   display: flex;
   flex-direction: column;
   gap: 0;
-  align-items: center;
+  align-items: stretch; /* full-width rows so dividers span the menu width */
   padding-top: 0;
 }
 .mobile-menu__social .social-link {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 48px;
   border-top: 1px solid rgba(0, 0, 0, 0.18);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* in RTL, start is the right side */
+  padding-inline: 18px;
 }
 .mobile-menu__social .social-link:last-child {
   border-bottom: 1px solid rgba(0, 0, 0, 0.18);

@@ -120,6 +120,47 @@ function joinPath(dir, filename) {
   return encodeURI(`./${dir}/${filename}`);
 }
 
+function toWebpFilename(filename) {
+  return filename.replace(/\.[^/.]+$/, ".webp");
+}
+
+const CARD_SRCSET_WIDTHS = [360, 640, 960];
+const CARD_SIZES =
+  "(max-width: 520px) 100vw, (max-width: 860px) 50vw, (max-width: 1100px) 33vw, 25vw";
+
+function toVariantFilename(filename, width, ext) {
+  const base = filename.replace(/\.[^/.]+$/, "");
+  return `${base}-${width}.${ext}`;
+}
+
+function buildSrcset(dir, filename, ext) {
+  return CARD_SRCSET_WIDTHS.map((w) => `${joinPath(dir, toVariantFilename(filename, w, ext))} ${w}w`).join(
+    ", ",
+  );
+}
+
+function supportsWebP() {
+  try {
+    const c = document.createElement("canvas");
+    if (!c.getContext) return false;
+    return c.toDataURL("image/webp").startsWith("data:image/webp");
+  } catch {
+    return false;
+  }
+}
+
+const HERO_VARIANT_WIDTHS = [640, 960, 1280, 1920];
+
+function pickVariantPath(originalPath, ext, widths = HERO_VARIANT_WIDTHS) {
+  // originalPath example: "./Main Banner Desktop/אבוקדו.jpg"
+  const base = originalPath.replace(/\.[^/.]+$/, "");
+  const vw = Math.max(1, window.innerWidth || 1);
+  const dpr = Math.min(3, Math.max(1, window.devicePixelRatio || 1));
+  const need = vw * dpr;
+  const chosen = widths.find((w) => w >= need) ?? widths[widths.length - 1];
+  return `${base}-${chosen}.${ext}`;
+}
+
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -143,13 +184,35 @@ function renderGrid(key, items) {
 
   for (const item of items) {
     const hasTitle = typeof item.title === "string" && item.title.trim().length > 0;
+    const webpSrc = item.webpSrc;
+    const jpgSrcset = item.jpgSrcset;
+    const webpSrcset = item.webpSrcset;
     const card = el("article", { class: "card" }, [
       el("div", { class: "card__img" }, [
-        el("img", {
-          src: item.src,
-          alt: hasTitle ? item.title : "",
-          loading: "lazy",
-        }),
+        webpSrc
+          ? el("picture", {}, [
+              el("source", {
+                type: "image/webp",
+                srcset: webpSrcset || webpSrc,
+                sizes: CARD_SIZES,
+              }),
+              el("img", {
+                src: item.src,
+                srcset: jpgSrcset || undefined,
+                sizes: CARD_SIZES,
+                alt: hasTitle ? item.title : "",
+                loading: "lazy",
+                decoding: "async",
+              }),
+            ])
+          : el("img", {
+              src: item.src,
+              srcset: jpgSrcset || undefined,
+              sizes: CARD_SIZES,
+              alt: hasTitle ? item.title : "",
+              loading: "lazy",
+              decoding: "async",
+            }),
       ]),
       hasTitle
         ? el("div", { class: "card__body" }, [el("h3", { class: "card__title" }, [item.title])])
@@ -274,7 +337,9 @@ function setupHeroSlider() {
     "./Main Banner Mobile/קשוקהש.jpg",
   ];
 
-  const images = isMobile ? mobileImages : desktopImages;
+  const wantsWebp = supportsWebP();
+  const baseImages = isMobile ? mobileImages : desktopImages;
+  const images = baseImages.map((p) => pickVariantPath(p, wantsWebp ? "webp" : "jpg"));
 
   // If reduced motion is enabled, show a single still image (no animation).
   if (prefersReducedMotion()) {
@@ -383,12 +448,16 @@ function main() {
   setupHeaderUnderline();
   setupToTopButton();
 
+  const wantsWebp = supportsWebP();
   for (const [key, group] of Object.entries(GALLERY)) {
     const dir = group?.dir;
     const files = Array.isArray(group?.items) ? group.items : [];
     const items = files.map((filename) => ({
       title: fileTitle(filename),
       src: joinPath(dir, filename),
+      webpSrc: wantsWebp ? joinPath(dir, toWebpFilename(filename)) : null,
+      jpgSrcset: buildSrcset(dir, filename, "jpg"),
+      webpSrcset: wantsWebp ? buildSrcset(dir, filename, "webp") : null,
     }));
     renderGrid(key, items);
   }
