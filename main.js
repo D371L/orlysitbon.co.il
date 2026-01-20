@@ -72,20 +72,21 @@ const GALLERY = {
   hosting: {
     dir: "מגשי ארוח",
     items: [
-      "מגש בורקס בעבודת יד.jpg",
       "מגש טארטלטים.jpg",
       "מגש טארטלטים(1).jpg",
-      "מגש כריכוני בריוש.jpg",
-      "מגש כריכוני קרואסון.jpg",
-      "מגש מאפה טוסקנה.jpg",
       "מגש מאפי בוקר צרפתי.jpg",
       "מגש פטיפורים.jpg",
       "מגש פטיפורים(1).jpg",
+      "מארז מקרונים.jpg",
+      "פחזניות פטיסייר.jpg",
+      "מגש בורקס בעבודת יד.jpg",
+      "מגש כריכוני בריוש.jpg",
+      "מגש כריכוני קרואסון.jpg",
+      "מגש מאפה טוסקנה.jpg",
       "סלט אנטיפסטי.jpg",
       "סלט טאבולה.jpg",
       "סלט עדשים ובטטה.jpg",
       "סלט פנצנלה.jpg",
-      "פחזניות פטיסייר.jpg",
       "קיש בטטה פקאן.jpg",
       "קיש בצל וכרישה.jpg",
       "קיש חציל ובלסמי.jpg",
@@ -94,8 +95,24 @@ const GALLERY = {
   },
 };
 
+const TITLE_OVERRIDES = {
+  "אנגליקה פיסטוק": "אנג'ליקה פיסטוק",
+  "מקשושקשת פרמזן וכמהין": "מקושקשת פרמז'ן וכמהין",
+  "ג_אטם": "ג'אטם",
+  "בראנץ בוקס": "בראנץ' בוקס",
+  "מארז 1": "",
+  "מארז 2": "",
+  "מארז 3": "",
+  "מארז 4": "",
+  "מארז 5": "",
+  "מארז 6": "",
+  "מגש טארטלטים(1)": "מגש טארטלטים",
+  "מגש פטיפורים(1)": "מגש פטיפורים",
+};
+
 function fileTitle(filename) {
-  return filename.replace(/\.[^/.]+$/, "");
+  const base = filename.replace(/\.[^/.]+$/, "");
+  return TITLE_OVERRIDES[base] ?? base;
 }
 
 function joinPath(dir, filename) {
@@ -125,17 +142,18 @@ function renderGrid(key, items) {
   grid.innerHTML = "";
 
   for (const item of items) {
+    const hasTitle = typeof item.title === "string" && item.title.trim().length > 0;
     const card = el("article", { class: "card" }, [
       el("div", { class: "card__img" }, [
         el("img", {
           src: item.src,
-          alt: item.title,
+          alt: hasTitle ? item.title : "",
           loading: "lazy",
         }),
       ]),
-      el("div", { class: "card__body" }, [
-        el("h3", { class: "card__title" }, [item.title]),
-      ]),
+      hasTitle
+        ? el("div", { class: "card__body" }, [el("h3", { class: "card__title" }, [item.title])])
+        : null,
     ]);
     grid.append(card);
   }

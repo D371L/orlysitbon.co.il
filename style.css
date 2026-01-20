@@ -348,6 +348,14 @@ img {
 .btn--primary:hover {
   background: #9a0824;
 }
+
+/* Header CTA: keep primary color, but remove shadow (static + hover/active/focus) */
+.btn--primary.header-cta,
+.btn--primary.header-cta:hover,
+.btn--primary.header-cta:active,
+.btn--primary.header-cta:focus {
+  box-shadow: none;
+}
 .btn--outline {
   background: transparent;
   border-color: var(--brand);
