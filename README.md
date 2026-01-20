@@ -1,7 +1,7 @@
 # Orly Sitbon Patisserie — Static Website
 
 This repository contains a **pure static website** for **Orly Sitbon Patisserie** built with **HTML + CSS + JavaScript** (no build tools, no frameworks).  
-It is designed for hosting on **GitHub Pages**.
+It is designed for hosting on **GitHub Pages** (or any static host).
 
 ## Tech Stack
 
@@ -15,6 +15,12 @@ It is designed for hosting on **GitHub Pages**.
 - **Responsive**: mobile-first adjustments via media queries (main breakpoints: `860px` and `520px`).
 - **No build step**: no bundlers, no npm, no frameworks.
 - **GitHub Pages-ready**: `.nojekyll`, relative paths, URL-encoding for Hebrew/spaces in file names.
+- **Performance**:
+  - Galleries use **`<picture>` + `webp` + `srcset/sizes`** to serve smaller images on mobile.
+  - Hero slider uses **responsive variants** (picked by viewport width × DPR) and preloads the first frame.
+- **SEO**:
+  - `meta description`, `canonical`, OpenGraph/Twitter cards, `robots.txt`, `sitemap.xml`
+  - Local SEO schema (`application/ld+json`) for address/phone/hours/social links.
 
 ## Project Structure
 
@@ -29,8 +35,14 @@ Top-level files:
   - mobile menu open animation (fade + slight slide)
   - smooth scroll for internal anchors
   - hero background slider (desktop + mobile) with `prefers-reduced-motion`
+    - chooses the best image variant by viewport width × DPR
   - gallery rendering (cards) from a JS manifest
+    - uses `<picture>` + `webp` + `srcset/sizes` for responsive images
 - `.nojekyll` — tells GitHub Pages to **not** run Jekyll processing
+- `robots.txt` — allows indexing + points to `sitemap.xml`
+- `sitemap.xml` — sitemap for the root page
+- `site.webmanifest` + favicons — icons for browser tabs and devices
+- `og-image-1200x630.png` — social preview image (OpenGraph/Twitter)
 
 Assets (root images):
 
@@ -72,6 +84,21 @@ If you add/remove images in a folder, update the relevant list in `GALLERY` insi
    - `hosting` → `מגשי ארוח/`
 3. Commit and push.
 
+### Image variants (important)
+
+For performance the site uses pre-generated variants next to each original image:
+
+- **Gallery cards**: `*-360.{jpg,webp}`, `*-640.{jpg,webp}`, `*-960.{jpg,webp}`
+- **Hero slider**: `*-640.{jpg,webp}`, `*-960.{jpg,webp}`, `*-1280.{jpg,webp}`, `*-1920.{jpg,webp}`
+
+If you add a new `.jpg`, generate its variants too (otherwise the site will still work, but it will fall back to the original `.jpg` and may be heavier).
+
+Example (ImageMagick):
+
+```bash
+convert "image.jpg" -auto-orient -strip -resize 960x\> -quality 82 "image-960.webp"
+```
+
 ## Hero Slider: how it works
 
 Implemented in `main.js` (`setupHeroSlider()`):
@@ -79,6 +106,7 @@ Implemented in `main.js` (`setupHeroSlider()`):
 - **Desktop**: cycles through images in `Main Banner Desktop/` every **6 seconds** with a fade transition.
 - **Mobile**: cycles through images in `Main Banner Mobile/` every **6 seconds** with a fade transition.
 - **Accessibility**: if the user has `prefers-reduced-motion: reduce`, animation is disabled and a single image is shown.
+- **Performance**: the slider chooses the best pre-generated variant (by viewport × DPR) and the first frame is preloaded in `index.html`.
 
 ### Updating hero slides
 
@@ -89,6 +117,8 @@ Hero slides are stored in:
 
 The slider uses an explicit image list inside `setupHeroSlider()` in `main.js` (paths are hardcoded in order).  
 If you add/remove slides, update those arrays.
+
+Then generate hero variants for the new images (`-640/-960/-1280/-1920` in `.webp` and `.jpg`).
 
 ## Social Links
 
@@ -137,15 +167,9 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000` in your browser.
 
-## Deploy to GitHub Pages
+## Deploy
 
-1. Push this repo to GitHub.
-2. In GitHub: **Settings → Pages**
-3. Select:
-   - **Source**: Deploy from a branch
-   - **Branch**: `main`
-   - **Folder**: `/ (root)`
-4. Save — GitHub Pages will publish the site.
+This is a static site: push to your host (GitHub Pages, Netlify, etc).
 
 ## Notes
 
@@ -167,4 +191,8 @@ To avoid Git/GitHub Pages issues:
   - Ensure paths are relative (no `/absolute/path` URLs).
 - **Menu covers the header on mobile**:
   - The menu uses `--mobile-header-h`. Make sure `main.js` is loaded and no JS errors occur.
+- **Social previews don’t update**:
+  - Social platforms cache OG tags. Use their debuggers to force refresh after deploy:
+    - Facebook Sharing Debugger
+    - Twitter Card Validator (or X equivalent)
 
