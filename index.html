@@ -448,13 +448,21 @@
           </div>
           <div class="about__grid">
             <figure class="about__media">
-              <img
-                src="./aboutme.png"
-                alt="תמונת בעלת העסק"
-                loading="lazy"
-                width="445"
-                height="895"
-              />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcset="./aboutme-428w.webp 428w, ./aboutme.webp 445w"
+                  sizes="(max-width: 860px) 100vw, 445px"
+                />
+                <img
+                  src="./aboutme.png"
+                  alt="תמונת בעלת העסק"
+                  loading="lazy"
+                  decoding="async"
+                  width="445"
+                  height="895"
+                />
+              </picture>
               <div class="about__logo" aria-hidden="true">
                 <img src="./footer_logo.png" alt="" width="120" height="148" loading="lazy" />
               </div>
