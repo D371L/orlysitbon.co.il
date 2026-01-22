@@ -313,6 +313,13 @@ function setupSmoothAnchors() {
     e.preventDefault();
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     history.replaceState(null, "", href);
+
+    // If the target section contains a gallery grid that hasn't been rendered yet,
+    // render it immediately (so the user doesn't scroll into an empty grid).
+    const grid = target.querySelector?.("[data-grid]");
+    if (grid?.dataset?.grid) {
+      window.__renderGalleryGrid?.(grid.dataset.grid);
+    }
   });
 }
 
@@ -465,11 +472,13 @@ function main() {
   setupHeaderUnderline();
   setupToTopButton();
 
+  // Build the gallery items once, but render grids lazily as they approach the viewport.
   const wantsWebp = supportsWebP();
+  const galleryItemsByKey = {};
   for (const [key, group] of Object.entries(GALLERY)) {
     const dir = group?.dir;
     const files = Array.isArray(group?.items) ? group.items : [];
-    const items = files.map((filename) => ({
+    galleryItemsByKey[key] = files.map((filename) => ({
       title: fileTitle(filename),
       src: joinPath(dir, filename),
       webpSrc: wantsWebp ? joinPath(dir, toWebpFilename(filename)) : null,
@@ -478,7 +487,46 @@ function main() {
       // Use a small variant as the base src so we never load the full original unless needed.
       fallbackSrc: joinPath(dir, toVariantFilename(filename, 360, "jpg")),
     }));
+  }
+
+  const rendered = new Set();
+  const renderKey = (key) => {
+    if (!key || rendered.has(key)) return;
+    const items = galleryItemsByKey[key] || [];
     renderGrid(key, items);
+    rendered.add(key);
+  };
+
+  // Expose a tiny hook for smooth-anchor navigation (no UI impact).
+  window.__renderGalleryGrid = renderKey;
+
+  const grids = Array.from(document.querySelectorAll("[data-grid]"));
+
+  // Render immediately if page opened with a hash pointing to a section (e.g. #section-boxes).
+  const hashTarget = window.location.hash ? document.querySelector(window.location.hash) : null;
+  const hashGridKey = hashTarget?.querySelector?.("[data-grid]")?.dataset?.grid;
+  if (hashGridKey) renderKey(hashGridKey);
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const key = entry.target?.dataset?.grid;
+          if (key) renderKey(key);
+          io.unobserve(entry.target);
+        }
+      },
+      // Start rendering a bit before the section becomes visible
+      { root: null, rootMargin: "350px 0px", threshold: 0.01 },
+    );
+    for (const grid of grids) io.observe(grid);
+  } else {
+    // Very old browsers: fall back to eager rendering
+    for (const grid of grids) {
+      const key = grid?.dataset?.grid;
+      if (key) renderKey(key);
+    }
   }
 }
 
