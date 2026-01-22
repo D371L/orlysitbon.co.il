@@ -383,8 +383,21 @@ function setupHeroSlider() {
   let idx = 0;
   let showingA = true;
 
+  // Load only the first frame immediately (better start-up performance).
+  // The next frame will be loaded right before the first transition.
   setBg(layerA, images[0]);
-  setBg(layerB, images[1]);
+  layerB.style.backgroundImage = "none";
+
+  // Warm up the next image shortly after the first frame is shown,
+  // so the first transition is smooth without loading it immediately at start.
+  window.setTimeout(() => {
+    try {
+      const pre = new Image();
+      pre.src = encodeURI(images[1] || images[0]);
+    } catch {
+      // ignore
+    }
+  }, 1200);
 
   const tick = () => {
     const nextIdx = (idx + 1) % images.length;
