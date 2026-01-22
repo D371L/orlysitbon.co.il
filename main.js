@@ -126,7 +126,7 @@ function toWebpFilename(filename) {
 
 const CARD_SRCSET_WIDTHS = [360, 640, 960];
 const CARD_SIZES =
-  "(max-width: 520px) 100vw, (max-width: 860px) 50vw, (max-width: 1100px) 33vw, 25vw";
+  "(max-width: 520px) 100vw, (max-width: 860px) 50vw, (max-width: 1100px) 33vw, 295px";
 
 function toVariantFilename(filename, width, ext) {
   const base = filename.replace(/\.[^/.]+$/, "");
@@ -187,6 +187,7 @@ function renderGrid(key, items) {
     const webpSrc = item.webpSrc;
     const jpgSrcset = item.jpgSrcset;
     const webpSrcset = item.webpSrcset;
+    const fallbackSrc = item.fallbackSrc || item.src;
     const card = el("article", { class: "card" }, [
       el("div", { class: "card__img" }, [
         webpSrc
@@ -197,21 +198,37 @@ function renderGrid(key, items) {
                 sizes: CARD_SIZES,
               }),
               el("img", {
-                src: item.src,
+                src: fallbackSrc,
                 srcset: jpgSrcset || undefined,
                 sizes: CARD_SIZES,
                 alt: hasTitle ? item.title : "",
                 loading: "lazy",
                 decoding: "async",
+                dataset: { originalSrc: item.src },
+                onerror: (e) => {
+                  const img = e.currentTarget;
+                  const originalSrc = img?.dataset?.originalSrc;
+                  if (!originalSrc || img.src === originalSrc) return;
+                  img.removeAttribute("srcset");
+                  img.src = originalSrc;
+                },
               }),
             ])
           : el("img", {
-              src: item.src,
+              src: fallbackSrc,
               srcset: jpgSrcset || undefined,
               sizes: CARD_SIZES,
               alt: hasTitle ? item.title : "",
               loading: "lazy",
               decoding: "async",
+              dataset: { originalSrc: item.src },
+              onerror: (e) => {
+                const img = e.currentTarget;
+                const originalSrc = img?.dataset?.originalSrc;
+                if (!originalSrc || img.src === originalSrc) return;
+                img.removeAttribute("srcset");
+                img.src = originalSrc;
+              },
             }),
       ]),
       hasTitle
@@ -458,6 +475,8 @@ function main() {
       webpSrc: wantsWebp ? joinPath(dir, toWebpFilename(filename)) : null,
       jpgSrcset: buildSrcset(dir, filename, "jpg"),
       webpSrcset: wantsWebp ? buildSrcset(dir, filename, "webp") : null,
+      // Use a small variant as the base src so we never load the full original unless needed.
+      fallbackSrc: joinPath(dir, toVariantFilename(filename, 360, "jpg")),
     }));
     renderGrid(key, items);
   }
