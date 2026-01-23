@@ -3,6 +3,11 @@
 This repository contains a **pure static website** for **Orly Sitbon Patisserie** built with **HTML + CSS + JavaScript** (no build tools, no frameworks).  
 It is designed for hosting on **GitHub Pages** (or any static host).
 
+## Credits
+
+Developed by **HellSec** — `https://github.com/hellsecdev`  
+Developer: **D371L** — `https://github.com/D371L`
+
 ## Tech Stack
 
 - **HTML**: page structure (`index.html`)
