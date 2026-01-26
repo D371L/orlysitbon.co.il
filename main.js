@@ -482,7 +482,6 @@ function main() {
   setupMobileMenu();
   setupSmoothAnchors();
   setupHeroSlider();
-  setupHeaderUnderline();
   setupToTopButton();
 
   // Build the gallery items once, but render grids lazily as they approach the viewport.
