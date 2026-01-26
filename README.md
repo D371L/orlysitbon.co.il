@@ -22,7 +22,9 @@ Developer: **D371L** — `https://github.com/D371L`
 - **GitHub Pages-ready**: `.nojekyll`, relative paths, URL-encoding for Hebrew/spaces in file names.
 - **Performance**:
   - Galleries use **`<picture>` + `webp` + `srcset/sizes`** to serve smaller images on mobile.
+  - Gallery sections render lazily with `IntersectionObserver` as they approach the viewport.
   - Hero slider uses **responsive variants** (picked by viewport width × DPR) and preloads the first frame.
+  - CSS/JS use cache-busting query strings in `index.html` (e.g. `style.css?v=...`).
 - **SEO**:
   - `meta description`, `canonical`, OpenGraph/Twitter cards, `robots.txt`, `sitemap.xml`
   - Local SEO schema (`application/ld+json`) for address/phone/hours/social links.
@@ -51,7 +53,8 @@ Top-level files:
 
 Assets (root images):
 
-- `header_logo.png` — header logo
+- `logo_notext.svg` — header/hero logo (no text)
+- `header_logo.png` — legacy header logo (not used in current header)
 - `footer_logo.png` — logo in the About section under the photo
 - `orlysitbontext.png` — hero title image
 - `aboutme.png` — About photo
@@ -104,6 +107,12 @@ Example (ImageMagick):
 convert "image.jpg" -auto-orient -strip -resize 960x\> -quality 82 "image-960.webp"
 ```
 
+Example (ffmpeg, if ImageMagick fails to encode WebP):
+
+```bash
+ffmpeg -i "image.jpg" -vf "scale=960:-1" -c:v libwebp -q:v 82 "image-960.webp"
+```
+
 ## Hero Slider: how it works
 
 Implemented in `main.js` (`setupHeroSlider()`):
@@ -152,8 +161,10 @@ Both are defined in `index.html` and styled in `style.css`.
 
 ## Header & Mobile Menu
 
-- **Desktop header**: full-width layout with underline.
-- **Mobile header**: grid layout (burger + כשר on the left, logo on the right; address centered).
+- **Desktop header**: full-width layout with a thin border-bottom line.
+- **Mobile header**: single-row layout:
+  - burger + כשר on the left
+  - social icons + address + logo on the right (logo sits to the right of the address)
 - **Mobile menu**:
   - Opens/closes via burger **toggle**
   - Burger animates into **X**
